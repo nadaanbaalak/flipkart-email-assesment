@@ -52,6 +52,7 @@ const EmailList = () => {
       return;
     }
     setSelectedFilter(filterSlug);
+    setOpenedMail(null);
   }
 
   function markAsFavourite(id: IEmailListItemProps["id"]) {
@@ -66,9 +67,24 @@ const EmailList = () => {
   }
 
   function removeAsFavourite(id: IEmailListItemProps["id"]) {
+    const indexOfFavourite = favouriteEmails.findIndex(
+      (item: string) => item === id
+    );
+    const nextOpenedFavouriteMailId =
+      favouriteEmails[
+        indexOfFavourite !== favouriteEmails.length - 1
+          ? indexOfFavourite + 1
+          : indexOfFavourite - 1
+      ];
+    const nextOpenedEmail = emailList.find(
+      (item) => item.id === nextOpenedFavouriteMailId
+    );
     const favouriteMails = favouriteEmails.filter(
       (item: string) => item !== id
     );
+    if (nextOpenedEmail) {
+      setOpenedMail(nextOpenedEmail);
+    }
     setFavouriteEmails(favouriteMails);
     setItemInLocalStorage(FAVOURITE_EMAIL_LOCAL_STORAGE_KEY, favouriteMails);
   }

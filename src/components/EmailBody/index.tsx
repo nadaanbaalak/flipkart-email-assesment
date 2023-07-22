@@ -58,7 +58,7 @@ const EmailBody = ({
         timerIdRef.current = null;
       }
     };
-  }, []);
+  }, [emailId]);
 
   return (
     <section className="email-body-wrapper">
