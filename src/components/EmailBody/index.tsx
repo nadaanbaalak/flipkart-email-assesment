@@ -11,7 +11,7 @@ interface IEmailBodyProps {
   emailSubject: IEmailListItemProps["subject"];
   emailDate: IEmailListItemProps["date"];
   from: IEmailListItemProps["from"];
-  handleMarkFavourite(): void;
+  handleMarkFavourite(id: IEmailListItemProps["id"]): void;
 }
 
 const EmailBody = ({
@@ -44,9 +44,17 @@ const EmailBody = ({
         <>
           <Avatar name={from.name} />
           <section className="email-body-content">
-            <section>
+            <div className="email-subject-wrapper">
               <p>{emailSubject}</p>
-              <DateTime date={emailDate} />
+              <button
+                onClick={() => handleMarkFavourite(emailId)}
+                className="mark-as-favourite-btn"
+              >
+                Mark as Favourite
+              </button>
+            </div>
+            <section className="email-subject-time">
+              <DateTime date={emailDate} className="email-time" />
             </section>
             <article dangerouslySetInnerHTML={{ __html: emailBody || "" }} />
           </section>

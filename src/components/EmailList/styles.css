@@ -9,8 +9,9 @@
   overflow: auto;
 }
 
-.email-list-pseudo-wrapper {
+.email-listing {
   display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100vh;
   overflow: hidden;
@@ -19,4 +20,8 @@
 .email-body-section {
   flex: 2;
   padding: 32px;
+}
+
+.email-list-content {
+  display: flex;
 }

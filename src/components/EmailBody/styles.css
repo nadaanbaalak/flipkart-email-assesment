@@ -9,4 +9,35 @@
 
 .email-body-content {
   margin-left: 24px;
+  color: var(--text);
+}
+
+.email-body-content .email-subject-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.mark-as-favourite-btn {
+  color: white;
+  font-weight: 500;
+  background-color: var(--accent);
+  cursor: pointer;
+  padding: 4px 8px;
+  font-size: 12px;
+  border: none;
+  border-radius: 13px;
+}
+
+.email-subject-time {
+  margin-bottom: 32px;
+}
+
+.email-subject-time p {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.email-subject-time .email-time {
+  color: var(--text);
 }
