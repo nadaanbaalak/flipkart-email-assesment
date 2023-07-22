@@ -1,0 +1,28 @@
+.email-item-wrapper {
+  border: 1px solid #cfd2dc;
+  border-radius: 8px;
+  padding: 12px 32px;
+  display: flex;
+  column-gap: 16px;
+  background-color: white;
+  color: var(--text);
+}
+
+.email-item-info {
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.email-item-from,
+.email-item-subject {
+  font-weight: 600;
+}
+
+.email-item-summary {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.email-item-summary p {
+  margin: 8px 0;
+}

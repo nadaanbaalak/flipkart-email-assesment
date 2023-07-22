@@ -1,0 +1,12 @@
+.email-body-wrapper {
+  display: flex;
+  border: 1px solid #cfd2dc;
+  border-radius: 8px;
+  padding: 12px 32px 0;
+  overflow: auto;
+  height: 100%;
+}
+
+.email-body-content {
+  margin-left: 24px;
+}

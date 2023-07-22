@@ -1,0 +1,14 @@
+.avatar-wrapper {
+  height: 50px;
+  width: 50px;
+  min-width: 50px;
+  border-radius: 50%;
+  font-size: 32px;
+  font-weight: 500;
+  background-color: #e54065;
+  color: white;
+  text-transform: capitalize;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -1,12 +1,9 @@
 import { useState } from "react";
 import "./App.css";
+import EmailList from "./components/EmailList";
 
 function App() {
-  return (
-    <>
-      <div>React + TS</div>
-    </>
-  );
+  return <EmailList />;
 }
 
 export default App;
