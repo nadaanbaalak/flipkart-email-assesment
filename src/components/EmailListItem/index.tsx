@@ -11,7 +11,9 @@ export interface IEmailListItemProps {
   subject: string;
   shortDescription: string;
   onClick(data: IEmailItem): void;
-  isEmailOpen: boolean;
+  isSomeEmailOpen: boolean;
+  isCurrentEmailOpen: boolean;
+  isRead: boolean;
 }
 
 const EmailListItem = ({
@@ -21,7 +23,9 @@ const EmailListItem = ({
   subject,
   shortDescription,
   onClick,
-  isEmailOpen,
+  isSomeEmailOpen,
+  isCurrentEmailOpen,
+  isRead,
 }: IEmailListItemProps) => {
   return (
     <section
@@ -34,7 +38,11 @@ const EmailListItem = ({
           subject,
         });
       }}
-      className={`email-item-wrapper ${isEmailOpen ? "email-open-state" : ""}`}
+      className={`email-item-wrapper ${
+        isSomeEmailOpen ? "email-open-state" : ""
+      } ${isCurrentEmailOpen ? "active-email" : ""} ${
+        isRead ? "read-email" : ""
+      }`}
     >
       <section>
         <Avatar name={from.name} />

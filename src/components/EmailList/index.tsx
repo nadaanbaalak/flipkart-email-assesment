@@ -2,7 +2,6 @@ import { lazy, Suspense } from "react";
 import EmailListItem from "../EmailListItem";
 import Spinner from "../common/Spinner";
 import Filters from "../common/Filters";
-
 import { IEmailListItemFromAttribute } from "../EmailListItem/types";
 import { FILTERS } from "./constants";
 import "./styles.css";
@@ -46,7 +45,11 @@ const EmailList = () => {
         </div>
       ) : (
         <section className="email-list-content">
-          <section className="email-listing">
+          <section
+            className={`email-listing ${
+              Boolean(openedMail) ? "email-listing-shrunk-state" : ""
+            }`}
+          >
             {filteredEmails.map((email) => {
               const { id, from, date, short_description, subject } = email;
 
@@ -59,7 +62,9 @@ const EmailList = () => {
                   shortDescription={short_description}
                   subject={subject}
                   onClick={handleMailSelection}
-                  isEmailOpen={Boolean(openedMail)}
+                  isSomeEmailOpen={Boolean(openedMail)}
+                  isCurrentEmailOpen={openedMail?.id === id}
+                  isRead={readEmails?.includes(id)}
                 />
               );
             })}
