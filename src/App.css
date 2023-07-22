@@ -9,4 +9,6 @@
 :root {
   --text: #636363;
   --accent: #e54065;
+  --bg-gray: #f4f5f9;
+  --filter-item-bg: #e1e4ea;
 }

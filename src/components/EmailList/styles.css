@@ -1,27 +1,29 @@
 .email-list-wrapper {
   display: flex;
   flex-direction: column;
-  row-gap: 12px;
-  padding: 32px 100px;
-  background-color: #f4f5f9;
-  flex: 1;
-  height: 100%;
-  overflow: auto;
-}
-
-.email-listing {
-  display: flex;
-  flex-direction: column;
   width: 100%;
   height: 100vh;
   overflow: hidden;
 }
 
+.email-list-content {
+  display: flex;
+  height: 100%;
+}
+
+.email-listing {
+  display: flex;
+  flex-direction: column;
+  row-gap: 12px;
+  padding: 32px 100px;
+  background-color: var(--bg-gray);
+  flex: 1;
+  height: 100%;
+  overflow: auto;
+}
+
 .email-body-section {
   flex: 2;
   padding: 32px;
-}
-
-.email-list-content {
-  display: flex;
+  overflow: auto;
 }

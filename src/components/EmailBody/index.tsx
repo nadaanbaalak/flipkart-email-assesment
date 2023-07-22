@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DateTime from "../common/DateTime";
 import Avatar from "../common/Avatar";
+import Spinner from "../common/Spinner";
 import { getEmailById } from "../../utils/apis";
 import { IEmailListItemProps } from "../EmailListItem";
 import "./styles.css";
-import Spinner from "../common/Spinner";
 
 interface IEmailBodyProps {
   emailId: IEmailListItemProps["id"];
@@ -12,6 +12,10 @@ interface IEmailBodyProps {
   emailDate: IEmailListItemProps["date"];
   from: IEmailListItemProps["from"];
   handleMarkFavourite(id: IEmailListItemProps["id"]): void;
+  handleRemoveFromFavourite(id: IEmailListItemProps["id"]): void;
+  handleMarkRead(id: IEmailListItemProps["id"]): void;
+  isUnread: boolean;
+  isFavourite: boolean;
 }
 
 const EmailBody = ({
@@ -20,9 +24,14 @@ const EmailBody = ({
   emailDate,
   from,
   handleMarkFavourite,
+  handleRemoveFromFavourite,
+  handleMarkRead,
+  isUnread,
+  isFavourite,
 }: IEmailBodyProps) => {
   const [emailBody, setEmailBody] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const timerIdRef = useRef<null | number>(null);
 
   useEffect(() => {
     async function getEmailBody() {
@@ -36,6 +45,20 @@ const EmailBody = ({
     }
   }, [emailId]);
 
+  useEffect(() => {
+    if (isUnread) {
+      timerIdRef.current = setTimeout(() => {
+        handleMarkRead(emailId);
+      }, 3000);
+    }
+    // will clear timer if the email is closed within 3 sec
+    return () => {
+      if (timerIdRef.current) {
+        clearTimeout(timerIdRef.current);
+      }
+    };
+  }, []);
+
   return (
     <section className="email-body-wrapper">
       {isLoading ? (
@@ -47,10 +70,16 @@ const EmailBody = ({
             <div className="email-subject-wrapper">
               <p>{emailSubject}</p>
               <button
-                onClick={() => handleMarkFavourite(emailId)}
+                onClick={() => {
+                  if (isFavourite) {
+                    handleRemoveFromFavourite(emailId);
+                  } else {
+                    handleMarkFavourite(emailId);
+                  }
+                }}
                 className="mark-as-favourite-btn"
               >
-                Mark as Favourite
+                {isFavourite ? "Remove from favourites" : "Mark as Favourite"}
               </button>
             </div>
             <section className="email-subject-time">
