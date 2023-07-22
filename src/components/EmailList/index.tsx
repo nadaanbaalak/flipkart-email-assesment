@@ -15,6 +15,7 @@ import {
   READ_EMAIL_LOCAL_STORAGE_KEY,
 } from "./constants";
 import "./styles.css";
+import Spinner from "../common/Spinner";
 
 export interface IEmailItem {
   id: string;
@@ -26,6 +27,7 @@ export interface IEmailItem {
 
 const EmailList = () => {
   const [emailList, setEmailList] = useState<Array<IEmailItem>>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [filteredEmails, setFilteredEmails] = useState<Array<IEmailItem>>([]);
   const [favouriteEmails, setFavouriteEmails] = useState(() => {
     return getItemFromLocalStorage(FAVOURITE_EMAIL_LOCAL_STORAGE_KEY);
@@ -84,9 +86,11 @@ const EmailList = () => {
 
   useEffect(() => {
     async function getEmails() {
+      setIsLoading(true);
       const emails = await getEmailList();
       setEmailList(emails.list);
       setFilteredEmails(emails.list);
+      setIsLoading(false);
     }
 
     getEmails();
@@ -105,17 +109,17 @@ const EmailList = () => {
     if (selectedFilter) {
       if (selectedFilter === FilterSlugEnum.READ) {
         const readMails = emailList.filter((email) =>
-          readEmails.includes(email.id)
+          readEmails?.includes(email.id)
         );
         setFilteredEmails(readMails);
       } else if (selectedFilter === FilterSlugEnum.FAVOURITE) {
         const favouriteMails = emailList.filter((email) =>
-          favouriteEmails.includes(email.id)
+          favouriteEmails?.includes(email.id)
         );
         setFilteredEmails(favouriteMails);
       } else if (selectedFilter === FilterSlugEnum.UNREAD) {
         const unreadEmails = emailList.filter(
-          (email) => !readEmails.includes(email.id)
+          (email) => !readEmails?.includes(email.id)
         );
         setFilteredEmails(unreadEmails);
       }
@@ -131,40 +135,47 @@ const EmailList = () => {
         selectedFilter={selectedFilter}
         onFilterSelect={handleFilterSelect}
       />
-      <section className="email-list-content">
-        <section className="email-listing">
-          {filteredEmails.map((email) => {
-            const { id, from, date, short_description, subject } = email;
+      {isLoading ? (
+        <div className="full-width-view full-height-view center">
+          <Spinner />
+        </div>
+      ) : (
+        <section className="email-list-content">
+          <section className="email-listing">
+            {filteredEmails.map((email) => {
+              const { id, from, date, short_description, subject } = email;
 
-            return (
-              <EmailListItem
-                key={id}
-                id={id}
-                from={from}
-                date={date}
-                shortDescription={short_description}
-                subject={subject}
-                onClick={handleMailSelection}
-              />
-            );
-          })}
-        </section>
-        {openedMail && filteredEmails.length > 0 && (
-          <section className="email-body-section">
-            <EmailBody
-              emailId={openedMail.id}
-              emailDate={openedMail.date}
-              emailSubject={openedMail.subject}
-              from={openedMail.from}
-              handleMarkFavourite={markAsFavourite}
-              handleRemoveFromFavourite={removeAsFavourite}
-              handleMarkRead={markRead}
-              isUnread={!readEmails?.includes(openedMail.id)}
-              isFavourite={favouriteEmails?.includes(openedMail.id)}
-            />
+              return (
+                <EmailListItem
+                  key={id}
+                  id={id}
+                  from={from}
+                  date={date}
+                  shortDescription={short_description}
+                  subject={subject}
+                  onClick={handleMailSelection}
+                  isEmailOpen={Boolean(openedMail)}
+                />
+              );
+            })}
           </section>
-        )}
-      </section>
+          {openedMail && filteredEmails.length > 0 && (
+            <section className="email-body-section">
+              <EmailBody
+                emailId={openedMail.id}
+                emailDate={openedMail.date}
+                emailSubject={openedMail.subject}
+                from={openedMail.from}
+                handleMarkFavourite={markAsFavourite}
+                handleRemoveFromFavourite={removeAsFavourite}
+                handleMarkRead={markRead}
+                isUnread={!readEmails?.includes(openedMail.id)}
+                isFavourite={favouriteEmails?.includes(openedMail.id)}
+              />
+            </section>
+          )}
+        </section>
+      )}
     </section>
   );
 };

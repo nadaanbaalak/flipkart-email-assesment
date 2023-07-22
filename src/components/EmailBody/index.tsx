@@ -55,6 +55,7 @@ const EmailBody = ({
     return () => {
       if (timerIdRef.current) {
         clearTimeout(timerIdRef.current);
+        timerIdRef.current = null;
       }
     };
   }, []);
@@ -62,7 +63,9 @@ const EmailBody = ({
   return (
     <section className="email-body-wrapper">
       {isLoading ? (
-        <Spinner />
+        <div className="full-width-view full-height-view center">
+          <Spinner />
+        </div>
       ) : (
         <>
           <Avatar name={from.name} />

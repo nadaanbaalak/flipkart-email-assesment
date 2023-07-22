@@ -6,16 +6,29 @@
   column-gap: 16px;
   background-color: white;
   color: var(--text);
+  cursor: pointer;
+}
+
+.email-item-wrapper.email-open-state .email-item-info {
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.email-item-wrapper:last-of-type {
+  margin-bottom: 200px;
 }
 
 .email-item-info {
   font-size: 18px;
-  line-height: 24px;
+  line-height: 22px;
+  width: max-content;
 }
 
 .email-item-from,
 .email-item-subject {
   font-weight: 600;
+  width: fit-content;
+  display: inline-block;
 }
 
 .email-item-summary {

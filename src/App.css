@@ -12,3 +12,17 @@
   --bg-gray: #f4f5f9;
   --filter-item-bg: #e1e4ea;
 }
+
+.full-width-view {
+  width: 100%;
+}
+
+.full-height-view {
+  height: 100%;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

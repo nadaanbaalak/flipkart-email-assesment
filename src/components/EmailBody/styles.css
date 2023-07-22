@@ -4,7 +4,8 @@
   border-radius: 8px;
   padding: 12px 32px 0;
   overflow: auto;
-  height: 100%;
+  height: calc(100% - 100px);
+  background-color: white;
 }
 
 .email-body-content {
@@ -15,6 +16,10 @@
 .email-body-content .email-subject-wrapper {
   display: flex;
   justify-content: space-between;
+}
+
+.email-subject-wrapper p {
+  font-weight: 500;
 }
 
 .mark-as-favourite-btn {
