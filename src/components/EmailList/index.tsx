@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import EmailListItem from "../EmailListItem";
 import Spinner from "../common/Spinner";
 import Filters from "../common/Filters";
@@ -6,6 +6,7 @@ import { IEmailListItemFromAttribute } from "../EmailListItem/types";
 import { FILTERS } from "./constants";
 import "./styles.css";
 import { useFilters } from "./helperHooks";
+import { getEmailList } from "../../utils/apis";
 
 const EmailBody = lazy(() => import("../EmailBody"));
 
@@ -18,9 +19,11 @@ export interface IEmailItem {
 }
 
 const EmailList = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [emailList, setEmailList] = useState<Array<IEmailItem>>([]);
+
   const {
     selectedFilter,
-    isLoading,
     filteredEmails,
     openedMail,
     readEmails,
@@ -30,7 +33,18 @@ const EmailList = () => {
     markAsFavourite,
     removeAsFavourite,
     markRead,
-  } = useFilters();
+  } = useFilters(emailList);
+
+  useEffect(() => {
+    async function getEmails() {
+      setIsLoading(true);
+      const emails = await getEmailList();
+      setEmailList(emails.list);
+      setIsLoading(false);
+    }
+
+    getEmails();
+  }, []);
 
   return (
     <section className="email-list-wrapper">

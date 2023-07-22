@@ -10,11 +10,8 @@ import {
   setItemInLocalStorage,
 } from "../../utils/localStorage";
 import { IEmailListItemProps } from "../EmailListItem";
-import { getEmailList } from "../../utils/apis";
 
-export function useFilters() {
-  const [emailList, setEmailList] = useState<Array<IEmailItem>>([]);
-  const [isLoading, setIsLoading] = useState(false);
+export function useFilters(emailList: Array<IEmailItem>) {
   const [filteredEmails, setFilteredEmails] = useState<Array<IEmailItem>>([]);
   const [favouriteEmails, setFavouriteEmails] = useState(() => {
     return getItemFromLocalStorage(FAVOURITE_EMAIL_LOCAL_STORAGE_KEY);
@@ -88,18 +85,6 @@ export function useFilters() {
   }
 
   useEffect(() => {
-    async function getEmails() {
-      setIsLoading(true);
-      const emails = await getEmailList();
-      setEmailList(emails.list);
-      setFilteredEmails(emails.list);
-      setIsLoading(false);
-    }
-
-    getEmails();
-  }, []);
-
-  useEffect(() => {
     if (readEmails === null) {
       setItemInLocalStorage(READ_EMAIL_LOCAL_STORAGE_KEY, []);
     }
@@ -131,8 +116,11 @@ export function useFilters() {
     }
   }, [selectedFilter, favouriteEmails]);
 
+  useEffect(() => {
+    setFilteredEmails(emailList);
+  }, [emailList]);
+
   return {
-    isLoading,
     filteredEmails,
     selectedFilter,
     openedMail,
