@@ -1,8 +1,10 @@
 const BASE_URL = "https://flipkart-email-mock.now.sh";
 
-export const getEmailList = async () => {
+export const getEmailList = async (pageNumber?: number) => {
   try {
-    const response = (await fetch(`${BASE_URL}/`)).json();
+    const response = (
+      await fetch(`${BASE_URL}/${pageNumber ? `?page=${pageNumber}` : ""}`)
+    ).json();
     return response;
   } catch (err) {
     console.log(err);

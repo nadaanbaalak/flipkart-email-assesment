@@ -1,12 +1,14 @@
 import { lazy, Suspense, useEffect, useState } from "react";
+import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
 import EmailListItem from "../EmailListItem";
 import Spinner from "../common/Spinner";
 import Filters from "../common/Filters";
 import { IEmailListItemFromAttribute } from "../EmailListItem/types";
-import { FILTERS } from "./constants";
+import { FILTERS, ITEMS_PER_PAGE } from "./constants";
 import "./styles.css";
 import { useFilters } from "./helperHooks";
 import { getEmailList } from "../../utils/apis";
+import { usePagination } from "../../hooks/usePagination";
 
 const EmailBody = lazy(() => import("../EmailBody"));
 
@@ -21,6 +23,7 @@ export interface IEmailItem {
 const EmailList = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [emailList, setEmailList] = useState<Array<IEmailItem>>([]);
+  const [totalElements, setTotalElements] = useState(0);
 
   const {
     selectedFilter,
@@ -35,24 +38,52 @@ const EmailList = () => {
     markRead,
   } = useFilters(emailList);
 
+  const { paginationData, handleNextClick, handlePreviousClick } =
+    usePagination(totalElements, ITEMS_PER_PAGE);
+
   useEffect(() => {
     async function getEmails() {
       setIsLoading(true);
-      const emails = await getEmailList();
+      const emails = await getEmailList(paginationData.currentPage);
+      setTotalElements(emails.total);
       setEmailList(emails.list);
       setIsLoading(false);
     }
 
     getEmails();
-  }, []);
+  }, [paginationData.currentPage]);
 
   return (
     <section className="email-list-wrapper">
-      <Filters
-        filtersList={FILTERS}
-        selectedFilter={selectedFilter}
-        onFilterSelect={handleFilterSelect}
-      />
+      <section className="pagination-and-filters">
+        <Filters
+          filtersList={FILTERS}
+          selectedFilter={selectedFilter}
+          onFilterSelect={handleFilterSelect}
+        />
+        <div className="pagination-section">
+          <span>{`${
+            (paginationData.currentPage - 1) * paginationData.itemsPerPage + 1
+          } - ${paginationData.currentPage * paginationData.itemsPerPage} of ${
+            paginationData.totalItems
+          }`}</span>
+          <button
+            onClick={handlePreviousClick}
+            disabled={paginationData.isPrevDisabled}
+            className="pagination-button"
+          >
+            <FiChevronLeft size="1.5em" />
+          </button>
+          <button
+            onClick={handleNextClick}
+            disabled={paginationData.isNextDisabled}
+            className="pagination-button"
+          >
+            <FiChevronRight size="1.5em" />
+          </button>
+        </div>
+      </section>
+
       {isLoading ? (
         <div className="full-width-view full-height-view center">
           <Spinner />

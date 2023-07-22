@@ -13,3 +13,5 @@ export const FILTERS = [
 export const FAVOURITE_EMAIL_LOCAL_STORAGE_KEY = "favourite-emails";
 
 export const READ_EMAIL_LOCAL_STORAGE_KEY = "read-email";
+
+export const ITEMS_PER_PAGE = 10;
